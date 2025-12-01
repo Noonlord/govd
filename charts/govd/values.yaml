@@ -112,12 +112,13 @@ postgresql:
   # PostgreSQL image
   image:
     repository: postgres
-    tag: latest
+    tag: "16-alpine"
     pullPolicy: IfNotPresent
   # Database credentials
   database: govd
   username: govd
-  password: password
+  # IMPORTANT: Change this password before deploying
+  password: changeme
   # Persistence for PostgreSQL
   persistence:
     enabled: true
