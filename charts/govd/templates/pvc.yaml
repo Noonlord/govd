@@ -1,0 +1,49 @@
+{{- if .Values.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "govd.fullname" . }}-downloads
+  labels:
+    {{- include "govd.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  {{- if .Values.persistence.storageClass }}
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.downloads.size }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "govd.fullname" . }}-logs
+  labels:
+    {{- include "govd.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  {{- if .Values.persistence.storageClass }}
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.logs.size }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "govd.fullname" . }}-private
+  labels:
+    {{- include "govd.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  {{- if .Values.persistence.storageClass }}
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.private.size }}
+{{- end }}
