@@ -32,7 +32,7 @@ RUN --mount=type=cache,target="/root/.cache/go-build" \
 FROM alpine:3.22 AS runtime
 
 WORKDIR /app
-
+RUN true
 RUN --mount=type=cache,target=/var/cache/apk,sharing=locked \
     --mount=type=cache,target=/var/lib/apk,sharing=locked \
     apk add --no-cache \
