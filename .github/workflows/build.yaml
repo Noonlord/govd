@@ -91,3 +91,25 @@ jobs:
           sources: |
             ${{ env.GHCR_IMAGE }}-amd64
             ${{ env.GHCR_IMAGE }}-arm64
+
+  publish-helm-chart:
+    needs: [push-manifest]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.14.0
+
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+
+      - name: Package Helm chart
+        run: helm package charts/govd --destination .helm-packages
+
+      - name: Push Helm chart to GHCR
+        run: |
+          helm push .helm-packages/govd-*.tgz oci://ghcr.io/${{ github.repository_owner }}/charts

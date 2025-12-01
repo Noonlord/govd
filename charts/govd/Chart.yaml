@@ -1,0 +1,16 @@
+apiVersion: v2
+name: govd
+description: A Helm chart for govd - Telegram bot for downloading media
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - telegram
+  - bot
+  - media
+  - downloader
+home: https://github.com/govdbot/govd
+sources:
+  - https://github.com/govdbot/govd
+maintainers:
+  - name: govdbot

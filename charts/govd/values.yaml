@@ -1,0 +1,136 @@
+# Default values for govd.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/govdbot/govd
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  metricsPort: 8080
+  profilerPort: 6060
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Bot configuration
+bot:
+  # Telegram Bot Token (required)
+  token: ""
+  # Telegram Bot API URL
+  apiUrl: "https://api.telegram.org"
+  # Number of concurrent updates to process
+  concurrentUpdates: 50
+
+# Media & Files configuration
+media:
+  # Directory for downloads
+  downloadsDir: "downloads"
+  # Maximum duration for media (e.g. 1h, 30m, 15s)
+  maxDuration: "1h"
+  # Maximum file size in MB
+  maxFileSizeMB: 1000
+  # Enable caching
+  caching: true
+
+# Default group settings
+defaults:
+  enableCaptions: true
+  enableSilent: false
+  enableNsfw: false
+  mediaAlbumLimit: 10
+  language: "en"
+
+# Other settings
+settings:
+  repoUrl: "https://github.com/govdbot/govd"
+  logLevel: "info"
+  automaticLanguageDetection: true
+  # Whitelist of user IDs (comma-separated)
+  whitelist: ""
+  # Admin user IDs (comma-separated)
+  admins: ""
+  captionsHeader: "<a href='{{url}}'>source</a> - @{{username}}"
+  captionsDescription: "<blockquote expandable>{{text}}</blockquote>"
+
+# Persistence configuration
+persistence:
+  enabled: true
+  # Storage class for PVCs
+  storageClass: ""
+  downloads:
+    size: 10Gi
+  logs:
+    size: 1Gi
+  private:
+    size: 1Gi
+
+# PostgreSQL configuration
+postgresql:
+  # Enable built-in PostgreSQL
+  enabled: true
+  # PostgreSQL image
+  image:
+    repository: postgres
+    tag: "16-alpine"
+    pullPolicy: IfNotPresent
+  # Database credentials
+  database: govd
+  username: govd
+  # IMPORTANT: Change this password before deploying
+  password: changeme
+  # Persistence for PostgreSQL
+  persistence:
+    enabled: true
+    storageClass: ""
+    size: 10Gi
+  # Resources for PostgreSQL
+  resources: {}
+
+# External database configuration (used when postgresql.enabled is false)
+externalDatabase:
+  host: ""
+  port: 5432
+  database: govd
+  username: govd
+  password: ""
